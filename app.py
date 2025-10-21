@@ -1,15 +1,13 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 
 app = Flask(__name__)
 
 CORS(app, origins=["https://miketerekhov.github.io"])
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
-@cross_origin()
 def home():
-    return "Hello from Flask on Render!"
+    return render_template('index.html')
 
 @app.route('/api/data')
 def data():
