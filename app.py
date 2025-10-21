@@ -1,9 +1,6 @@
 from flask import Flask, jsonify, render_template
-from flask_cors import CORS
 
 app = Flask(__name__)
-
-CORS(app, origins=["https://miketerekhov.github.io"])
 
 @app.route('/')
 def home():
