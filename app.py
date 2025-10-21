@@ -4,8 +4,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 CORS(app, origins=["https://miketerekhov.github.io"])
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
+@cross_origin()
 def home():
     return "Hello from Flask on Render!"
 
