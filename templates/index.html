@@ -1,14 +1,55 @@
 <!DOCTYPE html>
-  <script src="./script.js"></script>
-<html lang="en">
-<head>
-  <title>Title of the document</title>
-</head>
-<body>
-
-<h1>This is a heading</h1>
-    <button onclick="getMessage()">Click Me</button>
-<p>This is a paragraph.</p>
-
-</body>
+<html>
+  <head>
+    <title>Interactive Flask Plot (AJAX)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  </head>
+  <body>
+    <h1>Interactive Plotting Tool</h1>
+    
+    <div class="section">
+      <h2>Option 1: Plot from File (CSV/Excel)</h2>
+      <div id="dropZone" class="drop-zone">
+        <p><strong>📁 Drag & Drop your CSV or Excel file here</strong></p>
+        <p>or click to browse</p>
+        <p style="font-size: 12px; color: #999;">File should have at least 2 columns (x and y values)</p>
+      </div>
+      <input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
+      
+      <label for="csvColor">Plot Color:</label>
+      <select id="csvColor">
+        <option value="blue">Blue</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="purple">Purple</option>
+        <option value="orange">Orange</option>
+      </select>
+      
+      <div id="fileInfo" class="file-info"></div>
+    </div>
+    
+    <div class="section">
+      <h2>Option 2: Plot Mathematical Functions</h2>
+      <label for="function">Function:</label>
+      <select id="function">
+        <option value="linear">Linear</option>
+        <option value="quadratic">Quadratic</option>
+        <option value="cubic">Cubic</option>
+      </select>
+      
+      <label for="color">Color:</label>
+      <select id="color">
+        <option value="blue">Blue</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+      </select>
+      
+      <button id="plotBtn">Plot</button>
+    </div>
+    
+    <h3>Resulting Plot:</h3>
+    <img id="plot" src="" alt="Generated plot will appear here" width="600">
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
 </html>
