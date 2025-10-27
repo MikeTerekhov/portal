@@ -8,47 +8,59 @@
     <h1>Interactive Plotting Tool</h1>
     
     <div class="section">
-      <h2>Option 1: Plot from File (CSV/Excel)</h2>
-      <div id="dropZone" class="drop-zone">
-        <p><strong>📁 Drag & Drop your CSV or Excel file here</strong></p>
-        <p>or click to browse</p>
-        <p style="font-size: 12px; color: #999;">File should have at least 2 columns (x and y values)</p>
+      <h2>Gaussian Analysis (Force Symmetry Data)</h2>
+      <div class="file-upload-group">
+        <div class="file-upload-item">
+          <label>Symmetry Report CSV:</label>
+          <div id="symmetryDropZone" class="drop-zone small">
+            <p>📊 Drop symmetry CSV here</p>
+          </div>
+          <input type="file" id="symmetryInput" accept=".csv">
+          <div id="symmetryInfo" class="file-info"></div>
+        </div>
+        
+        <div class="file-upload-item">
+          <label>Assessment Data CSV:</label>
+          <div id="assessmentDropZone" class="drop-zone small">
+            <p>📋 Drop assessment CSV here</p>
+          </div>
+          <input type="file" id="assessmentInput" accept=".csv">
+          <div id="assessmentInfo" class="file-info"></div>
+        </div>
       </div>
-      <input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
       
-      <label for="csvColor">Plot Color:</label>
-      <select id="csvColor">
-        <option value="blue">Blue</option>
-        <option value="red">Red</option>
-        <option value="green">Green</option>
-        <option value="purple">Purple</option>
-        <option value="orange">Orange</option>
-      </select>
+      <div class="analysis-controls">
+        <label for="category">Analysis Category:</label>
+        <select id="category">
+          <option value="dominance_symmetry">Dominance Symmetry</option>
+          <option value="right_symmetry">Right Symmetry</option>
+        </select>
+        
+        <label for="sex">Gender:</label>
+        <select id="sex">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        
+        <label for="gaussianColor">Plot Color:</label>
+        <select id="gaussianColor">
+          <option value="skyblue">Sky Blue</option>
+          <option value="lightcoral">Light Coral</option>
+          <option value="lightgreen">Light Green</option>
+          <option value="plum">Plum</option>
+          <option value="orange">Orange</option>
+        </select>
+        
+        <button id="analyzeBtn">Generate Gaussian Plot</button>
+      </div>
       
-      <div id="fileInfo" class="file-info"></div>
+      <div id="gaussianStats" class="stats-display"></div>
     </div>
     
-    <div class="section">
-      <h2>Option 2: Plot Mathematical Functions</h2>
-      <label for="function">Function:</label>
-      <select id="function">
-        <option value="linear">Linear</option>
-        <option value="quadratic">Quadratic</option>
-        <option value="cubic">Cubic</option>
-      </select>
-      
-      <label for="color">Color:</label>
-      <select id="color">
-        <option value="blue">Blue</option>
-        <option value="red">Red</option>
-        <option value="green">Green</option>
-      </select>
-      
-      <button id="plotBtn">Plot</button>
-    </div>
+
     
     <h3>Resulting Plot:</h3>
-    <img id="plot" src="" alt="Generated plot will appear here" width="600">
+    <img id="plot" src="" alt="Generated plot will appear here" width="800">
     
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
