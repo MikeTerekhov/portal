@@ -103,9 +103,6 @@ def preprocess(csv1, csv2):
 
   df_controls_filtered['right_symmetry'] = df_controls_filtered['right_symmetry'].copy()*100
 
-
-
-
   return df_controls_filtered
 
 def preprocessInjuried(csv1, csv2):
@@ -157,10 +154,7 @@ def preprocessInjuried(csv1, csv2):
   df_controls_filtered = df_controls_filtered[df_controls_filtered['left_force'] != 0]
   df_controls_filtered = df_controls_filtered[df_controls_filtered['right_force'] != 0]
 
-
-
   ### Create dominant symmetry values ###
-
 
   df_controls_filtered['dominance_symmetry'] = np.where(
       df_controls_filtered['dominant_leg'] == 1,
@@ -183,13 +177,9 @@ def preprocessInjuried(csv1, csv2):
               np.nan),
   )
 
-
-
   df_controls_filtered['right_symmetry'] = np.where(df_controls_filtered['right_force'] != 0,
               (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
               np.nan)
-
-
 
   df_controls_filtered['left_symmetry'] =  np.where(df_controls_filtered['right_force'] != 0,
               (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
@@ -273,6 +263,24 @@ def plotFMAttributes(dataframe, category, sex, bins=30):
 
   return fit_amp, fit_mu, fit_sig
 
+def classify_x(x: float, fit_sig: float) -> str:
+    """Classify x into 'typical', 'borderline', or 'atypical'.
+    © 2025 Neuromuscular Dynamics, LLC
+    by Francisco Valero-Cuevas
+
+    Uses rules: x is the symmetry score, + favors right side.
+      - typical:    abs(x) <= fit_sig (68% of people are within this range)
+      - borderline:  fit_sig < abs(x) <= fit_sig*1.5 # fit_sig * 1.5 fit_sig (68-86% of people are within this range)
+      - atypical:    abs(x) > fit_sig*1.5 # beyond 1.5 * STD devs ()
+    """
+    a = abs(x)
+    if a <= fit_sig:
+        return "typical" # within 68% of people
+    elif a <= fit_sig*1.5:
+        return "borderline" # between 68-86% of people
+
+    return "atypical" # between 86-99% of people
+
 @app.route('/plot-gaussian', methods=['POST'])
 def plot_gaussian():
     try:
@@ -290,7 +298,10 @@ def plot_gaussian():
         
         # Process data
         try:
-            processed_data = preprocess(symmetry_file, assessment_file)
+            if category == 'injured':
+                processed_data = preprocessInjuried(symmetry_file, assessment_file)
+            else:
+                processed_data = preprocess(symmetry_file, assessment_file)
         except Exception as e:
             return jsonify({'error': f'Data preprocessing failed: {str(e)}'}), 400
 
