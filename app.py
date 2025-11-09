@@ -501,22 +501,18 @@ def plot_gaussian():
             processed_data = processed_data[processed_data['reason_acl_test'] == 1]
             category = 'injury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-
         elif category == 'not_injured_3':
             processed_data = processed_data[processed_data['reason_acl_test'] == 1]
             category = 'noninjury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-
         elif category == 'injured_6':
             processed_data = processed_data[processed_data['reason_acl_test'] == 2]
             category = 'injury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-
         elif category == 'not_injured_6':
             processed_data = processed_data[processed_data['reason_acl_test'] == 2]
             category = 'noninjury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-
         elif category == 'injured_RTS':
             processed_data = processed_data[processed_data['reason_acl_test'] == 3]
             category = 'injury_symmetry'
@@ -525,7 +521,6 @@ def plot_gaussian():
             processed_data = processed_data[processed_data['reason_acl_test'] == 3]
             category = 'noninjury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-        # --------------------------------------------------------------------
         # NOT INJURED
         else : 
             processed_data = processed_data
