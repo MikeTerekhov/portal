@@ -34,9 +34,14 @@
         <select id="category">
           <option value="dominance_symmetry">Dominance Symmetry</option>
           <option value="right_symmetry">Right Symmetry</option>
-          <option value="injured">Injured</option>
+          <option value="injured_3">Injured 3 Months</option>
+          <option value="not_injured_3">NOT Injured 3 Months</option>
+          <option value="injured_6">Injured 6 Months</option>
+          <option value="not_injured_6">NOT Injured 6 Months</option>
+          <option value="injured_RTS">Injured RTS (Return to Sport)</option>
+          <option value="not_injured_RTS">NOT Injured 3 Months</option>
         </select>
-        
+
         <label for="sex">Gender:</label>
         <select id="sex">
           <option value="Male">Male</option>
@@ -62,6 +67,18 @@
     
     <h3>Resulting Plot:</h3>
     <img id="plot" src="" alt="Generated plot will appear here" width="800">
+
+
+        <div id="forceCalcContainer" style="margin-top: 20px; display:none;">
+            <h4>Calculate Range</h4>
+
+            <label for="forceInput">Enter Force Value (%):</label>
+            <input type="number" id="forceInput" step="0.01" placeholder="e.g., 12.5">
+
+            <button id="calculateRangeBtn">Calculate Label</button>
+
+            <p id="forceCalcResult"></p>
+        </div>
     
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
