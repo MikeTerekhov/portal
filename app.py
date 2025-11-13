@@ -501,25 +501,13 @@ def plot_gaussian():
             processed_data = processed_data[processed_data['reason_acl_test'] == 1]
             category = 'injury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-        elif category == 'not_injured_3':
-            processed_data = processed_data[processed_data['reason_acl_test'] == 1]
-            category = 'noninjury_symmetry'
-            result = plotFMAttributes2(processed_data, category, sex)
         elif category == 'injured_6':
             processed_data = processed_data[processed_data['reason_acl_test'] == 2]
             category = 'injury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
-        elif category == 'not_injured_6':
-            processed_data = processed_data[processed_data['reason_acl_test'] == 2]
-            category = 'noninjury_symmetry'
-            result = plotFMAttributes2(processed_data, category, sex)
         elif category == 'injured_RTS':
             processed_data = processed_data[processed_data['reason_acl_test'] == 3]
             category = 'injury_symmetry'
-            result = plotFMAttributes2(processed_data, category, sex)
-        elif category == 'not_injured_RTS':
-            processed_data = processed_data[processed_data['reason_acl_test'] == 3]
-            category = 'noninjury_symmetry'
             result = plotFMAttributes2(processed_data, category, sex)
         # NOT INJURED
         else : 
@@ -529,18 +517,6 @@ def plot_gaussian():
 
         print(category)
         print(sex)
-
-        # Generate Gaussian fit and plot
-        # try:
-        #     if category == 'injured_3' or category == 'injured_6' or category == 'injured_RTS':
-        #         print("plot 2")
-        #         result = plotFMAttributes2(processed_data, category, sex)
-        #     else:
-        #         print("plot 1")
-        #         result = plotFMAttributes(processed_data, category, sex)
-        #
-        # except Exception as e:
-        #     return jsonify({'error': f'Gaussian fit failed: {str(e)}'}), 400
 
         # Capture the current Matplotlib figure in memory
         buf = io.BytesIO()
