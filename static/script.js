@@ -56,8 +56,8 @@ async function performGaussianAnalysis() {
         <p><strong>Gaussian Fit Mean (μ):</strong> ${data.stats.fit_mean.toFixed(2)}%</p>
         <p><strong>Gaussian Fit Standard Deviation (σ):</strong> ${data.stats.fit_std.toFixed(2)}%</p>
 
-        <p><strong>Data Mean (μ):</strong> ${data.stats.data_mean.toFixed(2)}%</p>
-        <p><strong>Data Standard Deviation (σ):</strong> ${data.stats.data_std.toFixed(2)}%</p>
+        <p><strong>Data Mean :</strong> ${data.stats.data_mean.toFixed(2)}%</p>
+        <p><strong>Data Standard Deviation :</strong> ${data.stats.data_std.toFixed(2)}%</p>
 
         <p><strong>Amplitude:</strong> ${data.stats.fit_amplitude.toFixed(2)}</p>
         <p><strong>Sample Size:</strong> ${data.stats.sex_count}</p>

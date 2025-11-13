@@ -275,7 +275,29 @@ def preprocessInjuried(csv1, csv2):
         ),
     )
 
+    # compute explicit injury and non-injury forces per row and new_symm = (injury / noninjury) * 100
+    injury_force = pd.Series(np.nan, index=df_injuried_filtered.index)
+    noninjury_force = pd.Series(np.nan, index=df_injuried_filtered.index)
+    mask_left = df_injuried_filtered["injured_leg_acl"] == 1
+    mask_right = df_injuried_filtered["injured_leg_acl"] == 2
 
+    # left injured -> injury = left, noninjury = right
+    injury_force.loc[mask_left] = df_injuried_filtered.loc[mask_left, "left_force"]
+    noninjury_force.loc[mask_left] = df_injuried_filtered.loc[mask_left, "right_force"]
+    # right injured -> injury = right, noninjury = left
+    injury_force.loc[mask_right] = df_injuried_filtered.loc[mask_right, "right_force"]
+    noninjury_force.loc[mask_right] = df_injuried_filtered.loc[mask_right, "left_force"]
+
+    # avoid division by zero
+    noninjury_nz = noninjury_force.replace({0: np.nan})
+
+    df_injuried_filtered["injury_force"] = injury_force
+    df_injuried_filtered["noninjury_force"] = noninjury_force
+    df_injuried_filtered["new_symm"] = (injury_force / noninjury_nz) * 100
+
+    print("----------")
+    print(df_injuried_filtered["new_symm"])
+    print("----------")
 
     # 13) convert some to percents
     df_injuried_filtered["dominance_symmetry"] = df_injuried_filtered["dominance_symmetry"] * 100
@@ -373,6 +395,20 @@ def plotFMAttributes2(dataframe, category, sex, bins=30):
   x_fit = np.linspace(bin_edges[0], bin_edges[-1], 200)
   y_fit = gaussian_func(x_fit, *popt)
   plt.plot(x_fit, y_fit, 'r-', linewidth=2, label='Best Fit Gaussian')
+
+  # White = very high symmetry (within ±0.5σ)
+  plt.axvspan(fit_mu - 0.5 * fit_sig, fit_mu + 0.5 * fit_sig, alpha=0.4, color='blue', label='High Symmetry (±0.5σ)')
+
+  # Green = typical range (within ±1σ)
+  plt.axvspan(fit_mu - fit_sig, fit_mu + fit_sig, alpha=0.15, color='green', label='Typical (±1σ)')
+
+  # Orange = borderline (1σ – 1.5σ)
+  plt.axvspan(fit_mu - fit_sig * 1.5, fit_mu - fit_sig, alpha=0.15, color='orange')
+  plt.axvspan(fit_mu + fit_sig, fit_mu + fit_sig * 1.5, alpha=0.15, color='orange', label='Borderline (1–1.5σ)')
+
+  # Red = atypical (beyond ±1.5σ)
+  plt.axvspan(bin_edges[0], fit_mu - fit_sig * 1.5, alpha=0.10, color='red')
+  plt.axvspan(fit_mu + fit_sig * 1.5, bin_edges[-1], alpha=0.10, color='red', label='Atypical (>1.5σ)')
 
   plt.xlabel('Value')
   plt.ylabel('Counts')
@@ -508,6 +544,18 @@ def plot_gaussian():
         elif category == 'injured_RTS':
             processed_data = processed_data[processed_data['reason_acl_test'] == 3]
             category = 'injury_symmetry'
+            result = plotFMAttributes2(processed_data, category, sex)
+        elif category == 'new_3':
+            processed_data = processed_data[processed_data['reason_acl_test'] == 1]
+            category = 'new_symm'
+            result = plotFMAttributes2(processed_data, category, sex)
+        elif category == 'new_6':
+            processed_data = processed_data[processed_data['reason_acl_test'] == 2]
+            category = 'new_symm'
+            result = plotFMAttributes2(processed_data, category, sex)
+        elif category == 'new_RTS':
+            processed_data = processed_data[processed_data['reason_acl_test'] == 3]
+            category = 'new_symm'
             result = plotFMAttributes2(processed_data, category, sex)
         # NOT INJURED
         else : 
