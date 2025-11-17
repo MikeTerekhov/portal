@@ -74,38 +74,73 @@ def preprocess(csv1, csv2):
   ### Create dominant symmetry values ###
 
 
+## OLD
+
+#   df_controls_filtered['dominance_symmetry'] = np.where(
+#       df_controls_filtered['dominant_leg'] == 1,
+#       np.where(df_controls_filtered['right_force'] != 0,
+#               (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
+#               np.nan),
+#       np.where(df_controls_filtered['left_force'] != 0,
+#               (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
+#               np.nan)
+#   )
+
+# ### Non dominant ###
+#   df_controls_filtered['nondominance_symmetry'] = np.where(
+#       df_controls_filtered['dominant_leg'] == 1,
+#       np.where(df_controls_filtered['left_force'] != 0,
+#               (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
+#               np.nan),
+#           np.where(df_controls_filtered['right_force'] != 0,
+#               (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
+#               np.nan),
+#   )
+
+# Dominance symmetry = dominant / nondominant
   df_controls_filtered['dominance_symmetry'] = np.where(
-      df_controls_filtered['dominant_leg'] == 1,
-      np.where(df_controls_filtered['right_force'] != 0,
-              (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
-              np.nan),
-      np.where(df_controls_filtered['left_force'] != 0,
-              (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
-              np.nan)
-  )
+        df_controls_filtered['dominant_leg'] == 1,  # Right is dominant
+        np.where(df_controls_filtered['left_force'] != 0,
+                df_controls_filtered['right_force'] / df_controls_filtered['left_force'],
+                np.nan),
+        np.where(df_controls_filtered['right_force'] != 0,  # Left is dominant
+                df_controls_filtered['left_force'] / df_controls_filtered['right_force'],
+                np.nan)
+    )
 
-### Non dominant ###
+    # Nondominance symmetry = nondominant / dominant
   df_controls_filtered['nondominance_symmetry'] = np.where(
-      df_controls_filtered['dominant_leg'] == 1,
-      np.where(df_controls_filtered['left_force'] != 0,
-              (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
-              np.nan),
-          np.where(df_controls_filtered['right_force'] != 0,
-              (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
-              np.nan),
-  )
+        df_controls_filtered['dominant_leg'] == 1,  # Right is dominant → left is nondominant
+        np.where(df_controls_filtered['right_force'] != 0,
+                df_controls_filtered['left_force'] / df_controls_filtered['right_force'],
+                np.nan),
+        np.where(df_controls_filtered['left_force'] != 0,  # Left is dominant → right is nondominant
+                df_controls_filtered['right_force'] / df_controls_filtered['left_force'],
+                np.nan)
+    )
 
+# OLD
+#   df_controls_filtered['right_symmetry'] = np.where(df_controls_filtered['right_force'] != 0,
+#               (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
+#               np.nan)
 
+  df_controls_filtered['right_symmetry'] = np.where(
+        df_controls_filtered['left_force'] != 0,
+        df_controls_filtered['right_force'] / df_controls_filtered['left_force'],
+        np.nan
+ )
 
-  df_controls_filtered['right_symmetry'] = np.where(df_controls_filtered['right_force'] != 0,
-              (df_controls_filtered['right_force'] - df_controls_filtered['left_force']) / df_controls_filtered['right_force'],
-              np.nan)
+# OLD
+#   df_controls_filtered['left_symmetry'] =  np.where(df_controls_filtered['right_force'] != 0,
+#               (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
+#               np.nan)
 
+  df_controls_filtered['left_symmetry'] = np.where(
+        df_controls_filtered['right_force'] != 0,
+        df_controls_filtered['left_force'] / df_controls_filtered['right_force'],
+        np.nan
+ )
 
-
-  df_controls_filtered['left_symmetry'] =  np.where(df_controls_filtered['right_force'] != 0,
-              (df_controls_filtered['left_force'] - df_controls_filtered['right_force']) / df_controls_filtered['left_force'],
-              np.nan)
 
   ### Convert into Percents ###
   df_controls_filtered['dominance_symmetry'] = df_controls_filtered['dominance_symmetry'].copy()*100
@@ -294,10 +329,6 @@ def preprocessInjuried(csv1, csv2):
     df_injuried_filtered["injury_force"] = injury_force
     df_injuried_filtered["noninjury_force"] = noninjury_force
     df_injuried_filtered["new_symm"] = (injury_force / noninjury_nz) * 100
-
-    print("----------")
-    print(df_injuried_filtered["new_symm"])
-    print("----------")
 
     # 13) convert some to percents
     df_injuried_filtered["dominance_symmetry"] = df_injuried_filtered["dominance_symmetry"] * 100
